@@ -87,36 +87,33 @@ def run():
             contours_const = detect_hotspot_const(temp_map)
 
        if contours_mean:# if detection occured, log it
-            #print(f"Hotspot over {config.DETECTION_THRESHOLD_OVER_MEAN} degrees celsius above mean detected")
-            #print(f"Max temp: {temp_map.max():.1f}°C, Mean: {temp_map.mean():.1f}°C")
             max_temp = temp_map.max()
             total_area_mean = sum(cv2.contourArea(c) for c in contours_mean)
-            log_detection(mean_path, 'Detection', lat, lon, alt, max_temp, len(contours_mean), total_area_mean)
+            #TODO: send detection log request
 
             if current_time - last_frame_save_mean > config.IMAGE_SAVE_COOLDOWN:
-                log_image(mean_image_dir, frame, display)
+                #TODO: send image log request 
                 last_frame_save_mean = time.time()
 
         if contours_const:# if detection occured, log it
-            #print(f"Hotspot over {config.DETECTION_THRESHOLD_CONST} degrees celsius detected")
-            #print(f"Max temp: {temp_map.max():.1f}°C, Mean: {temp_map.mean():.1f}°C")
             max_temp = temp_map.max()
             total_area_const = sum(cv2.contourArea(c) for c in contours_const)
-            log_detection(const_path, 'Detection', lat, lon, alt, max_temp, len(contours_const), total_area_const)
+            #TODO: send detection log request
 
             if current_time - last_frame_save_const > config.IMAGE_SAVE_COOLDOWN:
-                log_image(const_image_dir, frame, display)
+                #TODO: send image log request
                 last_frame_save_const = time.time()
 
 
+        #Send allert to GCS
         if contours_const or contours_mean:
             if current_time - last_gcs_alert > config.GCS_ALERT_FREQUENCY:
                 if config.DETECTION_TYPE == 0:
-                    mavlink.send_detection_alert(lat, lon, alt, total_area_mean)
+                    #TODO: send GCS detection allert
                     last_gcs_alert = current_time
                 if config.DETECTION_TYPE [1, 2]:    
-                    mavlink.send_detection_alert(lat, lon, alt, total_area_const)
+                    #TODO: send GCS detection allert
                     last_gcs_alert = current_time
  
-
+    #TODO: if main.py sends shutdown request, clean up and shutoff
 

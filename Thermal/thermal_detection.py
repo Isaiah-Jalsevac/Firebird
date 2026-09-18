@@ -63,7 +63,9 @@ def detect_hotspot_mean(temp_map):
 
     return valid_contours
 
+heartbeat = time.time()
 def run():
+    heartbeat.value = time.time()
     # setup camera connection
     try:
         camera = ThermalCamera()

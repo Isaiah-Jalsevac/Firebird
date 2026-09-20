@@ -1,7 +1,14 @@
 # config.py
 
 # main
+PROCESSES = {
+    "thermal": thermal_detection.run,
+    "visible": stubb_visible_loop,
+    "mavlink": stubb_mavlink_loop,
+}
 
+TERMINATE_GRACE_PERIOD = 1.0
+HEARTBEAT_CHECK_FREQUENCY = 1 # time in hz inbetween heartbeat checks
 
 # thermal_camera
 FRAME_WIDTH = 256

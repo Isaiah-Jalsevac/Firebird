@@ -27,7 +27,18 @@ MIN_HOTSPOT_AREA = 5
 DETECTION_THRESHOLD_OVER_MEAN = 10 
 
 # logging
-LOG_PATH = 'data/logs' # file path for detection logs
+LOG_CSV_HEADER = [
+    'timestamp',
+    'log_type',
+    'detection_type',
+    'latitude',
+    'longitude',
+    'altitude(m)',
+    'hotspot_count',
+    'max_temp(c)',
+    'smoke_plumes',
+]
+LOG_PATH = "Logs"# file path for detection logs
 IMAGE_SAVE_COOLDOWN = 1.0 # cooldown between saving images
 
 # mavlink

@@ -72,6 +72,18 @@ def supervisor_loop(process_table):
     spawn_all(process_table)
     process_check_all(process_table)
 
+    # ======== Create Shared Memory Objects =======
+    # --- Thermal Objects ---
+    thermal_frame = #TODO:
+    display_frame = #TODO:
+
+    # --- Visible Light Objects ---
+    visible_frame = #TODO:
+    smoke_contours = #TODO:
+
+    # --- Mavlink Objects ---
+
+
     running = True
 
     # ======== Main Loop ========

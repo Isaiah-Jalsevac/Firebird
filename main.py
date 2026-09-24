@@ -67,23 +67,22 @@ def heartbeat_check(name, table):
         return
     process_health_check(name, table)
     
-# ======== Main Loop ========
-# main loop, this coordinates all the other loops for logging detections, sending 
-# allerts etc. also used to check on processes and restart in necessary
 def supervisor_loop(process_table):
+    # ======== Spawn all Processes ========
+    spawn_all(process_table)
+    process_check_all(process_table)
+
     running = True
+
+    # ======== Main Loop ========
     while running:
-        # spawn all processes
-        # check on all processes every 1hz 
-        # (just set up an if time passed > x run heartbeat checks)
-        # run detection coordination logic
-
-        spawn_all(process_table)
-
+        # ======== Process Check ========
         last_process_check = time.time()
         
-        process_check_all(process_table)
+        if time.time() - last_process_check > config.HEARTBEAT_CHECK_FREQUENCY:
+            process_check_all(process_table)
 
+        # ======== Detection Logic ========
 
 
 

@@ -26,4 +26,42 @@ def init_log(log_path):
 
     mission_log = os.path.join(new_parent_dir, f"mission_log {timestamp}")
 
-    header = 
+    header = config.LOG_CSV_HEADER
+
+    with open(mission_log, 'w', newline='') as f:
+        csv.writer(f).writerow(header)
+
+    return image_directory, thermal_raw, thermal_image, visible_contours, visible_image, mission_log
+
+def log_heartbeat(filepath, log_type, lat, lon, alt):
+    row = {
+        'timestamp': datetime.datetime(),
+        'log_type': log_type,
+        'latitude': lat,
+        'longitude': lon,
+        'altutude(m)': alt,
+    }
+    with open(filepath, 'a', newline='') as f:
+        csv.DictWriter(f, fieldnames=LOG_CSV_HEADER, restval='').writerow(row)
+
+def log_event(filepath, log_type, lat, lon, alt, detection_type, hotspot_count, max_temp, smoke_plumes):
+    row = {
+        'timestamp': datetime.datetime(),
+        'log_type': log_type,
+        'latitude': lat,
+        'longitude': lon,
+        'altitude(m)': alt,
+        'detection_type': detection_type,
+        'hotspot_count': hotspot_count,
+        'max_temp(c)': max_temp,
+        'smoke_plumes': smoke_plumes,
+    }
+    
+    with open(filepath, 'a', newline='') as f:
+        csv.DictWriter(f, fieldnames=LOG_CSV_HEADER, restval='').writerow(row)
+
+
+
+
+
+                                                                           

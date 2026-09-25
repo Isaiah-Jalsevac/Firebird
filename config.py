@@ -30,10 +30,10 @@ DETECTION_THRESHOLD_OVER_MEAN = 10
 LOG_CSV_HEADER = [
     'timestamp',
     'log_type',
-    'detection_type',
     'latitude',
     'longitude',
     'altitude(m)',
+    'detection_type',
     'hotspot_count',
     'max_temp(c)',
     'smoke_plumes',

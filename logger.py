@@ -5,6 +5,7 @@ import cv2
 import datetime
 import os
 import csv
+import config
 
 def init_log(log_path):
     # create directory paths

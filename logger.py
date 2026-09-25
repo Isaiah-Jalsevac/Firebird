@@ -60,7 +60,15 @@ def log_event(filepath, log_type, lat, lon, alt, detection_type, hotspot_count, 
     with open(filepath, 'a', newline='') as f:
         csv.DictWriter(f, fieldnames=LOG_CSV_HEADER, restval='').writerow(row)
 
+def log_thermal_image(image_dir, frame, display):
+    os.makedirs(image_dir, exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    
+    # Save raw temperature data for ML
+    np.save(os.path.join(image_dir, f"detection_{timestamp}.npy"), frame)
 
+    # Save colourmap image for display
+    cv2.imwrite(os.path.join(image_dir, f"detection_{timestamp}.png"), display)
 
 
 

@@ -86,16 +86,28 @@ def supervisor_loop(process_table):
 
     running = True
 
+        global_state = {
+            #global values
+            'time': time.time(),
+            'state': 0, # 0: no detection, 1: thermal detection, 2: smoke detection, 3: both thermal and smoke detection
+            'latitude': 0.0,
+            'longitude': 0.0,
+            'altutude':  0.0,
+            #Thermal values
+            'max_temp(c)': 0.0,
+            'hotspot_count': 0,
+            #Visible values
+            'smoke_plumes': 0
+        }
+
     # ======== Main Loop ========
     while running:
         # ======== Process Check ========
-        last_process_check = time.time()
-        
         if time.time() - last_process_check > config.HEARTBEAT_CHECK_FREQUENCY:
             process_check_all(process_table)
 
+        last_process_check = time.time()
         # ======== Detection Logic ========
-
 
 
 if __name__ == "__main__":

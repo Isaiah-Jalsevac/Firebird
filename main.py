@@ -73,16 +73,19 @@ def supervisor_loop(process_table):
     process_check_all(process_table)
 
     # ======== Create Shared Memory Objects =======
-    # --- Thermal Objects ---
-    thermal_frame = #TODO:
-    display_frame = #TODO:
+    # --- Thermal ---
+    thermal_heartbeat = Value('d', time.time())
+    hotspot_detected = Value('b', False)
+    max_temp = Value('f', 0.0)
+    hotspot_count = Value('i', 0)
 
-    # --- Visible Light Objects ---
-    visible_frame = #TODO:
-    smoke_contours = #TODO:
+    # --- Visible Light ---
+    visible_heartbeat = Value('d', time.time())
+    plume_detected = Value('b', False)
+    plume_count = Value('i', 0)
 
     # --- Mavlink Objects ---
-
+    heartbeat = Value('d', time.time())
 
     running = True
 

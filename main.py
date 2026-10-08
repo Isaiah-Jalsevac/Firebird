@@ -17,25 +17,17 @@ def stubb_mavlink_loop(heartbeat: Value):
 
 # ======== multiprocessing setup ========
 def build_process_table():
-    table = {}
-    for process in config.PROCESSES:
-        table[process] = {
-            "process": None,
-            "heartbeat": Value('d', time.time()),
-            "restarts": 0,
-            "time_since_last_restart": 0.0,
-            "status_code": 0,
-        }
-    return table
+    dict = {}
+    dict.add 
+
 
 def spawn_process(name, table):
-    entry = table[name]
-    target_fn = config.PROCESSES[name]
-    entry["heartbeat"] = time.time()
+    target_fn, data = table
+    data["heartbeat"] = time.time()
 
-    p = Process(target=target_fn, args=(entry["heartbeat"],), daemon=True)
+    p = Process(target=target_fn, args=(data["heartbeat"],), daemon=True)
     p.start()
-    p = table[name]["process"]
+    p = data[name]["process"]
     print(f"[supervisor] spawned '{name}' (pid={p.pid})")
 
 def spawn_all(table):

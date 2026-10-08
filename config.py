@@ -2,9 +2,18 @@
 
 # main
 PROCESSES = {
-    "thermal": (thermal_detection.run, {'heartbeat': thermal_heartbeat, 'detection': hotspot_detected, 'max_temp(c)': max_temp, 'hotspot_count': hotspot_count})
-            "visible": (stubb_visible_loop, {'heartbeat': visible_heartbeat, 'detection': plume_detected, 'plume_count': plume_count})
-    "mavlink": stubb_mavlink_loop,
+    "thermal": (thermal_detection.run, {
+        'heartbeat': thermal_heartbeat, 
+        'detection': hotspot_detected,
+        'max_temp(c)': max_temp,
+        'hotspot_count': hotspot_count})
+    "visible": (stubb_visible_loop, {
+        'heartbeat': visible_heartbeat,
+        'detection': plume_detected,
+        'plume_count': plume_count})
+    "mavlink": (stubb_mavlink_loop, {
+        'heartbeat': mavlink_heartbeat,
+    })
 }
 
 TERMINATE_GRACE_PERIOD = 1.0

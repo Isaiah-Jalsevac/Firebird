@@ -16,21 +16,20 @@ def stubb_mavlink_loop(heartbeat: Value):
         time.sleep(0.2)
 
 # ======== multiprocessing setup ========
-def spawn_process(process, processes):
-    target_fn, data = processes[process]
+def spawn_process(process, process_table):
+    target_fn, data = process_table[process]
     data["heartbeat"] = time.time()
     p = Process(target=target_fn, args=(data["heartbeat"],), daemon=True)
     p.start()
     p = data["process"]
     print(f"[supervisor] spawned '{name}' (pid={p.pid})")
 
-def spawn_all(processes):
-    for process in processes:
-        spawn_process(process, processes)
+def spawn_all(process_table):
+    for process in process_table:
+        spawn_process(process, process_table)
 
-
-def kill_process(name, table):
-    entry = table[name]
+def kill_process(process, process_table):
+    entry = process_table[process]
     p = entry["process"]
     if p is None or not p.is_alive():
         return
@@ -39,20 +38,20 @@ def kill_process(name, table):
     if p.is_alive():
         p.kill()
 
-def process_health_check(name, table):
-    p = table[name]["process"]
+def process_health_check(process, process_table):
+    p = process_table[process]["process"]
     if p.is_alive() != False:
-        kill_process(name, table)
-        spawn_process(name, table)
+        kill_process(process, process_table)
+        spawn_process(process, process_table)
 
-def process_check_all(table):
-    for name in table:
-        heart_beat_check(name, table)
+def process_check_all(process_table):
+    for process in process_table:
+        heart_beat_check(process, process_table)
 
-def heartbeat_check(name, table):
-    if time.time() - table[name]["heartbeat"].value < config.HEARTBEAT_CHECK:
+def heartbeat_check(process, process_table):
+    if time.time() - process_table[process]["heartbeat"].value < config.HEARTBEAT_CHECK:
         return
-    process_health_check(name, table)
+    process_health_check(process, process_table)
     
 def supervisor_loop(process_table):
     # ======== Spawn all Processes ========
@@ -76,8 +75,6 @@ def supervisor_loop(process_table):
 
     running = True
 
-    global_state = config.PROCESSES
-
     # ======== Main Loop ========
     while running:
         # ======== Process Check ========
@@ -89,8 +86,8 @@ def supervisor_loop(process_table):
 
 
 if __name__ == "__main__":
-    process_table = build_process_table()
-    spawn_all(process_table)
+    state = config.PROCESSES
+    spawn_all(state)
 
-    supervisor_loop(process_table)
+    supervisor_loop(state)
 

@@ -16,23 +16,18 @@ def stubb_mavlink_loop(heartbeat: Value):
         time.sleep(0.2)
 
 # ======== multiprocessing setup ========
-def build_process_table():
-    dict = {}
-    dict.add 
-
-
-def spawn_process(name, table):
-    target_fn, data = table
+def spawn_process(process, processes):
+    target_fn, data = processes[process]
     data["heartbeat"] = time.time()
-
     p = Process(target=target_fn, args=(data["heartbeat"],), daemon=True)
     p.start()
-    p = data[name]["process"]
+    p = data["process"]
     print(f"[supervisor] spawned '{name}' (pid={p.pid})")
 
-def spawn_all(table):
-    for name in table:
-        spawn_process(name, table)
+def spawn_all(processes):
+    for process in processes:
+        spawn_process(process, processes)
+
 
 def kill_process(name, table):
     entry = table[name]
@@ -81,19 +76,7 @@ def supervisor_loop(process_table):
 
     running = True
 
-        global_state = {
-            #global values
-            'time': time.time(),
-            'state': 0, # 0: no detection, 1: thermal detection, 2: smoke detection, 3: both thermal and smoke detection
-            'latitude': 0.0,
-            'longitude': 0.0,
-            'altutude':  0.0,
-            #Thermal values
-            'max_temp(c)': 0.0,
-            'hotspot_count': 0,
-            #Visible values
-            'smoke_plumes': 0
-        }
+    global_state = config.PROCESSES
 
     # ======== Main Loop ========
     while running:
